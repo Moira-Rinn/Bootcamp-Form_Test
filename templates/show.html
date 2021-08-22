@@ -1,0 +1,23 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+  <h1>Show User Page</h1>
+  <div id="users">
+    <div class="usersInfo">
+      <h2>Users:</h2>
+      {% for user in session['users'] %}
+        <h4 >{{user}}</h4>
+      {% endfor %}
+    </div>
+    <div class="usersInfo">
+      <h2>Email:</h2>
+      {% for user in session['usersEmail'] %}
+        <h4>{{user}}</h4>
+      {% endfor %}
+    </div>
+    <p>Number of Users: {{session['count']}}</p>
+    <p>Number of Visits: {{session['visits']}}</p>
+  </div>
+
+{% endblock %}
