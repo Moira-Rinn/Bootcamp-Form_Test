@@ -6,20 +6,28 @@ app.secret_key = "'b'\xc2\xb7\x96\x13fa&\x91\x1c\xc0\xd6\xe7\xc289\xfb"
 
 @app.route('/')
 def index():
-    session['visits'] = session['visits'] + 1
+    if 'visits' in session:
+        session['visits'] = session['visits'] + 1
+    else:
+        session['visits'] = 1
 
     return render_template("index.html")
 
 
 @app.route('/users', methods=['POST'])
 def create_user():
-    print("Got Post Info")
-    session['username'] = request.form['name']
-    session['users'].append(session['username'])
-    print(session['users'])
-    session['useremail'] = request.form['email']
-    session['usersEmail'].append(session['useremail'])
-    session['count'] = session['count'] + 1
+    if 'users' in session:
+        session['users'].append(request.form['name'])
+    else:
+        session['users'] = []
+        session['users'].append(request.form['name'])
+    if 'userEmail' in session:
+        session['userEmail'].append(request.form['email'])
+    else:
+        session['userEmail'] = []
+        session['userEmail'].append(request.form['email'])
+
+    session['count'] = len(session['users'])
 
     return redirect('/')
 
@@ -31,10 +39,7 @@ def show_user():
 
 @app.route('/clear', methods=['POST'])
 def clear_users():
-    session['users'] = []
-    session['usersEmail'] = []
-    session['count'] = 0
-    session['visits'] = 0
+    session.clear()
 
     return redirect('/')
 
